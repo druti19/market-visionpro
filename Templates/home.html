@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MarketInsightPro</title>
+    <link rel="icon" href="{{ url_for('static', filename='market.ico') }}" type="image/x-icon">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            height: 100%;
+            overflow: auto;
+            font-family: 'Arial', sans-serif;
+            font-size: 16px;
+            background-image: url('{{ background_image_url }}'), url('{{ background_image_url }}');
+            background-size: auto, auto; /* Set the size to auto for repeat */
+            background-position: top left, bottom left; /* Adjust the positions as needed */
+            background-repeat: repeat, repeat; /* Set repeat for both images */
+            color: #000000;
+        }
+
+        h1 {
+            font-size: 60px;
+            font-family: 'Impact', sans-serif;
+            margin: 250px 0 20px 20px;
+            text-align: left;
+            z-index: 1; /* Ensure the heading is above the background overlay */
+            color: #000000;
+        }
+
+        h2, h3 {
+            font-size: 20px;
+            color: #000000;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        #buttonContainer {
+            text-align: left;
+            z-index: 1; /* Ensure buttons are above the background overlay */
+            margin: 20px 0;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        button {
+            background-color: #001f3f;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            margin: 0 10px;
+            margin-left: 20px;
+        }
+
+        /* User guide spanning the entire length of the page */
+        #userGuideContainer {
+            max-width: 1200px;
+            margin: 175px auto 0;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: left;
+            z-index: 1; /* Ensure content is above the background overlay */
+            margin-bottom: 40px; /* Increased margin-bottom */
+        }
+
+        #imageContainer1 {
+            max-width: 200px;
+            margin-left: auto;
+            position: absolute;
+            top: 70px;
+            right: 300px;
+        }
+
+        #imageContainer1 img {
+            width: 250%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+
+        /* Centered image container */
+        #imageContainer {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+            z-index: 1; /* Ensure content is above the background overlay */
+            margin-bottom: 20px;
+        }
+
+        #imageContainer img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Image and explanation side by side */
+        .imageWithExplanation {
+            max-width: 1200px;
+            margin: 40px auto 0; /* Increased margin-top */
+            display: flex;
+            gap: 20px;
+            justify-content: flex-end; /* Align items to the end (right side) */
+            z-index: 1; /* Ensure content is above the background overlay */
+            margin-bottom: 20px;
+        }
+
+        .imageContainer img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-left: 150px;
+        }
+
+        .explanationBox {
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            text-align: left;
+            margin-left: 150px;
+        }
+
+        .explanationBox h2 {
+            text-align: left; /* Align title to the left for this box */
+        }
+
+        /* Footer styles */
+        #footer {
+            max-width: 100%;
+            margin: 20px auto 0;
+            padding: 20px;
+            background-color: #000;
+            color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            display: none; /* Initially hidden */
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+        }
+
+        #footer p {
+            color: #fff; /* Set text color to white */
+        }
+
+        /* Scroll to top button */
+        #scrollTopBtn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #001f3f;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            display: none;
+        }
+
+        /* Data for the three information boxes */
+        .container {
+            background-color: rgba(255, 255, 255, 0);
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 20%;
+            text-align: center;
+        }
+
+        .container img {
+            max-width: 50px;
+            height: auto;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            color: #000000; /* Set title color to black */
+            font-size: 18px;
+        }
+
+        p {
+            color: #000000; /* Set paragraph color to black */
+            font-size: 14px;
+        }
+
+    </style>
+</head>
+
+<body>
+    <!-- Background image overlay -->
+    <div id="backgroundOverlay"></div>
+
+    <!-- Title, slogan, and buttons -->
+    <h1>MarketInsightPro</h1>
+    <h3 style="text-align: left; margin-left: 20px;">Predictive Insights for Any Stock</h3>
+    <div id="buttonContainer">
+        <a href="{{ url_for('login') }}"><button>Login</button></a>
+        <a href="{{ url_for('register') }}"><button>Register</button></a>
+    </div>
+    <div>
+        <div id="imageContainer1" style="width: 200px; margin-left: 20px;">
+            <img src="{{ url_for('static', filename='Business crisis-rafiki.png') }}" alt="Logo" style="width: 250%; height: auto;">
+        </div>
+    </div>
+
+    <!-- User guide -->
+    <div id="userGuideContainer">
+        <p>
+            Welcome to MarketInsightPro, your ultimate companion for conquering the complexities of stock markets. As an investor, you need a larger range of stocks to invest in and analyse.
+            As the internet increasingly democratizes stock investment, it has become a widespread endeavor for investors seeking diversification across a broad spectrum of stocks, a need often unmet by mainstream prediction tools.
+            By inputting a minimum of one year's historical data, you can obtain accurate predictions for stock prices, offering a comprehensive solution tailored to the diverse portfolios of modern investors.
+            MarketInsightPro is here to provide a cutting-edge solution, delivering accurate predictions for stock open prices and transforming your data into a powerful asset for informed decision-making.
+        </p>
+    </div>
+
+    <div id="imageContainer">
+        <img src="{{ url_for('static', filename='charts-basic.png') }}" alt="Centered Image" style="max-width: 100%; height: auto;">
+    </div>
+
+    <div style="display: flex; justify-content: space-around;">
+
+        <!-- Left Container -->
+        <div class="container">
+            <div class="iconContainer">
+                <img src="{{ url_for('static', filename='visualisation.ico') }}" alt="Left Icon" style="max-width: 50px;">
+            </div>
+            <h2>Data Input</h2>
+            <p>
+                Import your historical stock data.
+                Our intuitive error handling mechanisms will ensure your data is correctly formatted.
+            </p>
+        </div>
+
+        <!-- Center Container -->
+        <div class="container">
+            <div class="iconContainer">
+                <img src="{{ url_for('static', filename='prediction.ico') }}" alt="Center Icon" style="max-width: 50px;">
+            </div>
+            <h2>Visualization Mastery</h2>
+            <p>
+                Explore a structured GUI offering diverse graphs.
+                Customize time ranges, select specific stocks, and apply filters for a detailed and tailored view.
+            </p>
+        </div>
+
+        <!-- Right Container -->
+        <div class="container">
+            <div class="iconContainer">
+                <img src="{{ url_for('static', filename='inputs.ico') }}" alt="Right Icon" style="max-width: 50px;">
+            </div>
+            <h2>Prediction Power:</h2>
+            <p>
+                Leverage our model, trained meticulously on historical data.
+                Evaluate open price predictions for confident investment decisions.
+            </p>
+        </div>
+
+    </div>
+
+    <div class="imageWithExplanation">
+        <div class="imageContainer">
+            <img src="{{ url_for('static', filename='Business crisis-cuate.png') }}" alt="Image 2" style="max-width: 100%; height: auto;">
+        </div>
+        <div class="explanationBox">
+            <h2>Search Bar for the FTSE500: </h2>
+            <p>
+                MarketInsightPro enhances user convenience by providing a user-friendly search functionality specifically tailored for stocks listed in the FTSE 500.
+                With a dedicated search bar, users can effortlessly explore and select stocks of interest within the FTSE 500 index.
+                What sets this feature apart is its ability to initiate predictions for the chosen stock without necessitating users to manually input historical data, for any that are part of the FTSE500 stocks.
+                This ensures an efficient forecasting experience, making MarketInsightPro a valuable tool for investors seeking quick and accurate insights for the most popular UK stocks.
+            </p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div id="footer">
+        <p>
+            This program does not account for external shocks, unforeseen events, or sudden market changes that might significantly impact stock prices.
+            Factors such as inflation, macroeconomic shifts, or geopolitical events are not explicitly considered in the predictive model.
+            Additionally, users should note that the program's predictions may not provide insights into longer-term trends, as it focuses on shorter timeframes.
+            As with any financial tool, users should exercise caution and supplement predictions with a comprehensive understanding of the broader market dynamics.
+        </p>
+    </div>
+
+    <!-- Scroll to top button -->
+    <button id="scrollTopBtn" onclick="scrollToTop()">Scroll to Top</button>
+
+    <script>
+        // Function to show/hide footer based on scroll position
+
+        window.onscroll = function() {
+            // Calculate the distance from the bottom of the page
+
+            var distanceFromBottom = document.body.scrollHeight - window.innerHeight - window.scrollY;
+
+            // Gets the footer element
+
+            var footer = document.getElementById("footer");
+
+            // Show the footer if close to the bottom, hide otherwise
+
+            if (distanceFromBottom <= 20) {
+                footer.style.display = "block";
+            } else {
+                footer.style.display = "none";
+            }
+
+            // Show/hide scroll to top button
+
+            var scrollTopBtn = document.getElementById('scrollTopBtn');
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                scrollTopBtn.style.display = 'block';
+            } else {
+                scrollTopBtn.style.display = 'none';
+            }
+        };
+
+        // Scroll to top function
+        function scrollToTop() {
+            // Scroll to the top of the document
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
+        }
+    </script>
+
+</body>
+
+</html>

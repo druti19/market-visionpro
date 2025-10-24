@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sample chart</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+</head>
+
+<body>
+    <canvas id="lineChart" width="1200" height="500"></canvas>
+    <script>
+        function getRandomColor() {
+            var colors = [
+                "rgb(75, 192, 192)",   // Light Blue
+                "rgb(0, 0, 128)",      // Dark Blue
+                "rgb(128, 0, 0)",      // Maroon
+                "rgb(128, 0, 128)"     // Purple
+            ];
+            var randomIndex = Math.floor(Math.random() * colors.length);
+            return colors[randomIndex];
+        }
+
+        var ctx = document.getElementById("lineChart").getContext("2d");
+        var lineChart = new Chart(ctx, {
+            type: "line",
+            data: {
+                labels: {{ labels | tojson | safe }},
+                datasets: [
+                    {
+                        label: "Open Prices",
+                        data: {{ values | tojson | safe }},
+                        fill: false,
+                        borderColor: getRandomColor(),
+                        lineTension: 0.1
+                    }
+                ]
+            },
+            options: {
+                responsive: false
+            }
+        });
+    </script>
+</body>
+</html>
